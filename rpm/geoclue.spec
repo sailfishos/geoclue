@@ -2,7 +2,6 @@ Name: geoclue
 Version: 0.12.99
 Release: 1
 Summary: Geoinformation Service
-Group: System/Libraries
 URL: http://www.freedesktop.org/wiki/Software/GeoClue/
 License: LGPLv2+
 Source: %{name}-%{version}.tar.gz
@@ -20,6 +19,7 @@ BuildRequires: libxslt
 
 %files
 %defattr(-,root,root,-)
+%license COPYING
 %{_libdir}/*.so.*
 %{_datadir}/GConf/gsettings/geoclue
 %{_datadir}/glib-2.0/schemas/*.xml
@@ -29,7 +29,6 @@ BuildRequires: libxslt
 
 %package devel
 Summary: Development files for %{name}
-Group: Development/Libraries
 Requires: %{name} = %{version}-%{release}
 
 %description devel
