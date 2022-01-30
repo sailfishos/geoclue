@@ -171,8 +171,8 @@ set_options (GcIfaceGeoclue *geoclue,
 		return klass->set_options (geoclue, options, error);
 	} 
 
-        /* It is not an error to not have a SetOptions implementation */
-        return TRUE;
+	/* It is not an error to not have a SetOptions implementation */
+	return TRUE;
 }
 
 static gboolean 
@@ -189,7 +189,7 @@ gc_provider_remove_reference (GcProvider *provider, const char *client)
 	(*pcount)--;
 	if (*pcount == 0) {
 		g_hash_table_remove (priv->connections, client);
-        }
+	}
 	if (g_hash_table_size (priv->connections) == 0) {
 		gc_provider_shutdown (provider);
 	}
@@ -207,7 +207,7 @@ gc_provider_remove_client (GcProvider *provider, const char *client)
 		return FALSE;
 	}
 	
-        g_hash_table_remove (priv->connections, client);
+	g_hash_table_remove (priv->connections, client);
 	if (g_hash_table_size (priv->connections) == 0) {
 		gc_provider_shutdown (provider);
 	}
@@ -216,7 +216,7 @@ gc_provider_remove_client (GcProvider *provider, const char *client)
 
 static void
 add_reference (GcIfaceGeoclue *geoclue,
-               DBusGMethodInvocation *context)
+	       DBusGMethodInvocation *context)
 {
 	GcProviderPrivate *priv = GET_PRIVATE (geoclue);
 	char *sender;
@@ -236,7 +236,7 @@ add_reference (GcIfaceGeoclue *geoclue,
 
 static void 
 remove_reference (GcIfaceGeoclue *geoclue,
-                  DBusGMethodInvocation *context)
+		  DBusGMethodInvocation *context)
 {
 	GcProvider *provider = GC_PROVIDER (geoclue);
 	char *sender;
