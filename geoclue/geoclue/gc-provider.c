@@ -196,18 +196,14 @@ gc_provider_remove_reference (GcProvider *provider, const char *client)
 	return TRUE;
 }
 
-static gboolean 
+static gboolean
 gc_provider_remove_client (GcProvider *provider, const char *client)
 {
-	int *pcount;
 	GcProviderPrivate *priv = GET_PRIVATE (provider);
-	
-	pcount = g_hash_table_lookup (priv->connections, client);
-	if (!pcount) {
+
+	if (!g_hash_table_remove (priv->connections, client)) {
 		return FALSE;
 	}
-	
-	g_hash_table_remove (priv->connections, client);
 	if (g_hash_table_size (priv->connections) == 0) {
 		gc_provider_shutdown (provider);
 	}
