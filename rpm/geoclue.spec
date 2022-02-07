@@ -164,7 +164,7 @@ Summary: provider for %{name}
 
 %build
 autoreconf -vfi
-%configure --enable-static=no --enable-connman=no
+%configure --enable-static=no --enable-connman=no --enable-gpsd=no
 make %{?_smp_mflags}
 
 

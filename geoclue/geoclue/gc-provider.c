@@ -171,12 +171,12 @@ set_options (GcIfaceGeoclue *geoclue,
 		return klass->set_options (geoclue, options, error);
 	} 
 
-        /* It is not an error to not have a SetOptions implementation */
-        return TRUE;
+	/* It is not an error to not have a SetOptions implementation */
+	return TRUE;
 }
 
 static gboolean 
-gc_provider_remove_client (GcProvider *provider, const char *client)
+gc_provider_remove_reference (GcProvider *provider, const char *client)
 {
 	int *pcount;
 	GcProviderPrivate *priv = GET_PRIVATE (provider);
@@ -196,9 +196,23 @@ gc_provider_remove_client (GcProvider *provider, const char *client)
 	return TRUE;
 }
 
+static gboolean
+gc_provider_remove_client (GcProvider *provider, const char *client)
+{
+	GcProviderPrivate *priv = GET_PRIVATE (provider);
+
+	if (!g_hash_table_remove (priv->connections, client)) {
+		return FALSE;
+	}
+	if (g_hash_table_size (priv->connections) == 0) {
+		gc_provider_shutdown (provider);
+	}
+	return TRUE;
+}
+
 static void
 add_reference (GcIfaceGeoclue *geoclue,
-               DBusGMethodInvocation *context)
+	       DBusGMethodInvocation *context)
 {
 	GcProviderPrivate *priv = GET_PRIVATE (geoclue);
 	char *sender;
@@ -218,13 +232,13 @@ add_reference (GcIfaceGeoclue *geoclue,
 
 static void 
 remove_reference (GcIfaceGeoclue *geoclue,
-                  DBusGMethodInvocation *context)
+		  DBusGMethodInvocation *context)
 {
 	GcProvider *provider = GC_PROVIDER (geoclue);
 	char *sender;
 	
 	sender = dbus_g_method_get_sender (context);
-	if (!gc_provider_remove_client (provider, sender)) {
+	if (!gc_provider_remove_reference (provider, sender)) {
 		g_warning ("Unreffed by client that has not been referenced");
 	}
 
